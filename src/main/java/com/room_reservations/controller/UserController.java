@@ -1,20 +1,57 @@
 package com.room_reservations.controller;
 
+import com.room_reservations.domain.User;
 import com.room_reservations.domain.UserDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.room_reservations.mapper.UserMapper;
+import com.room_reservations.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@RestController
+@RequiredArgsConstructor
 @RequestMapping("/roomreservations/users")
 public class UserController {
 
+    private final UserService userService;
+    private final UserMapper userMapper;
+
     @GetMapping
-    public List<UserDto> getUsers() {
-        return new ArrayList<>();
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<User> allUsers = userService.getAllUsers();
+        List<UserDto> userDtos = userMapper.mapToUserDtoList(allUsers);
+        return ResponseEntity.ok(userDtos);
     }
 
-    
+    @GetMapping(value = "{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        UserDto userDto = userMapper.mapToUserDto(user);
+        return ResponseEntity.ok(userDto);
+    }
+
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
+        User user = userMapper.mapToUser(userDto);
+        userService.save(user);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+        User user = userService.updateUser(userDto);
+        UserDto userDto1 = userMapper.mapToUserDto(user);
+        return ResponseEntity.ok(userDto1);
+    }
 
 }

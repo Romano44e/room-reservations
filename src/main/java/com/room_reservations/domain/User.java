@@ -11,10 +11,16 @@ import lombok.NoArgsConstructor;
 @Entity(name = "USERS")
 public class User {
 
+    public User(String name, String email, int points) {
+        this.name = name;
+        this.email = email;
+        this.points = points;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", unique = true, nullable = false)
-    private int id;
+    @Column(name = "ID", unique = true)
+    private Long id;
 
     @Column(name = "NAME")
     private String name;
