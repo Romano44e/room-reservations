@@ -17,7 +17,7 @@ public class Reservation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", unique = true, nullable = false)
+    @Column(name = "ID", unique = true)
     private int id;
 
     @Column(name = "USER_ID")
@@ -34,5 +34,7 @@ public class Reservation {
 
     @Column(name = "status")
     private String status;
+
+    //pole wartość typ BigDecimal i przekonwertować na String
 
 }

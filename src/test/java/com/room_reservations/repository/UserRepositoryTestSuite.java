@@ -16,7 +16,7 @@ public class UserRepositoryTestSuite {
 
     @Autowired
     private UserRepository userRepository;
-    
+
 
     @Test
     void testUserRepositorySave() {
