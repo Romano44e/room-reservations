@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -24,5 +26,8 @@ public class Room {
 
     @Column(name = "LOCATION")
     private String location;
+
+    @Column(name = "PRICE")
+    private BigDecimal price;
 
 }

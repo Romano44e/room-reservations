@@ -2,10 +2,12 @@ package com.room_reservations.domain;
 
 
 import jakarta.persistence.*;
+import jdk.jshell.Snippet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -26,15 +28,25 @@ public class Reservation {
     @Column(name = "ROOM_ID")
     private int roomId;
 
-    @Column(name = "startTime")
+    @Column(name = "START_TIME")
     private LocalDate startTime;
 
-    @Column(name = "endTime")
+    @Column(name = "END_TIME")
     private LocalDate endTime;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "RESERVATION_STATUS")
+    private String reservationStatus;
 
-    //pole wartość typ BigDecimal i przekonwertować na String
+    @Column(name = "PAYMENT_STATUS")
+    private String paymentStatus;
 
+    @Column(name = "AMOUNT")
+    private BigDecimal amount;
+
+    @Column(name = "CODE")
+    private String code;
+
+    public static Snippet builder() {
+        return null;
+    }
 }

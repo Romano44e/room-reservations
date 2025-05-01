@@ -26,16 +26,44 @@ public class UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    public List<User> getUserByName(final String name) {
+        List<User> all = userRepository.findAll();
+        List<User> listByName = all.stream()
+                .filter(u -> u.getName().toLowerCase().contains(name))
+                .toList();
+        return listByName;
+    }
+
+    public List<User> getUserByEmail(final String email) {
+        List<User> all = userRepository.findAll();
+        List<User> listByEmail = all.stream()
+                .filter(u -> u.getEmail().toLowerCase().contains(email))
+                .toList();
+        return listByEmail;
+    }
+
     public void deleteUser(final Long id) {
         userRepository.deleteById(id);
     }
 
+    public void deleteUserByName(final String name) {
+        List<User> all = userRepository.findAll();
+        List<User> listByName = all.stream().filter(u -> u.getName().equals(name))
+                .toList();
+        Long id = listByName.get(0).getId();
+        userRepository.deleteById(id);
+    }
+
     public User updateUser(final UserDto userDto) {
-        User user1 = userRepository.findById(userDto.getId()).orElse(null);
-        user1.setName(userDto.getName());
-        user1.setEmail(userDto.getEmail());
-        user1.setPoints(userDto.getPoints());
-        return userRepository.save(user1);
+        List<User> all = userRepository.findAll();
+        List<User> listByName = all.stream().filter(u -> u.getName().equals(userDto.getName()))
+                .toList();
+
+        User user = listByName.get(0);
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+        user.setPoints(userDto.getPoints());
+        return userRepository.save(user);
     }
 
 }

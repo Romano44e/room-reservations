@@ -27,16 +27,36 @@ public class UserController {
         return ResponseEntity.ok(userDtos);
     }
 
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "/name/{name}")
+    public ResponseEntity<List<UserDto>> getUserByName(@PathVariable String name) {
+        List<User> userByNameList = userService.getUserByName(name);
+        List<UserDto> userDtos = userMapper.mapToUserDtoList(userByNameList);
+        return ResponseEntity.ok(userDtos);
+    }
+
+    @GetMapping(value = "/email/{email}")
+    public ResponseEntity<List<UserDto>> getUserByEmail(@PathVariable String email) {
+            List<User> userByEmail = userService.getUserByEmail(email);
+            List<UserDto> userDtos = userMapper.mapToUserDtoList(userByEmail);
+            return ResponseEntity.ok(userDtos);
+    }
+
+    @GetMapping(value = "/id/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         UserDto userDto = userMapper.mapToUserDto(user);
         return ResponseEntity.ok(userDto);
     }
 
-    @DeleteMapping(value = "{id}")
+    @DeleteMapping(value = "/id/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
         userService.deleteUser(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/name/{name}")
+    public ResponseEntity<Void> deleteUserByName(@PathVariable String name) {
+        userService.deleteUserByName(name);
         return ResponseEntity.ok().build();
     }
 
