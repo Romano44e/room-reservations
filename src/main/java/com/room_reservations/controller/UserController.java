@@ -54,9 +54,9 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/name/{name}")
-    public ResponseEntity<Void> deleteUserByName(@PathVariable String name) {
-        userService.deleteUserByName(name);
+    @DeleteMapping(value = "/password/{password}")
+    public ResponseEntity<Void> deleteUserByPassword(@PathVariable String password) {
+        userService.deleteUserByPassword(password);
         return ResponseEntity.ok().build();
     }
 
@@ -69,7 +69,7 @@ public class UserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
-        User user = userService.updateUser(userDto);
+        User user = userService.updateUserByPassword(userDto);
         UserDto userDto1 = userMapper.mapToUserDto(user);
         return ResponseEntity.ok(userDto1);
     }

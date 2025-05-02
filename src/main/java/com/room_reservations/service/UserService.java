@@ -46,23 +46,26 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public void deleteUserByName(final String name) {
+
+    public void deleteUserByPassword(final String password) {
         List<User> all = userRepository.findAll();
-        List<User> listByName = all.stream().filter(u -> u.getName().equals(name))
+        List<User> listByPassword = all.stream().filter(u -> u.getPassword().equals(password))
                 .toList();
-        Long id = listByName.get(0).getId();
+        Long id = listByPassword.get(0).getId();
         userRepository.deleteById(id);
     }
 
-    public User updateUser(final UserDto userDto) {
+    public User updateUserByPassword(final UserDto userDto) {
+        String password = userDto.getPassword();
         List<User> all = userRepository.findAll();
-        List<User> listByName = all.stream().filter(u -> u.getName().equals(userDto.getName()))
+        List<User> listByPassword = all.stream().filter(u -> u.getPassword().equals(password))
                 .toList();
 
-        User user = listByName.get(0);
+        User user = listByPassword.getFirst();
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPoints(userDto.getPoints());
+        user.setPassword(userDto.getPassword());
         return userRepository.save(user);
     }
 

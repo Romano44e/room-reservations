@@ -30,4 +30,7 @@ public class Room {
     @Column(name = "PRICE")
     private BigDecimal price;
 
+    @Column(name = "KEY")
+    private String key;
+
 }

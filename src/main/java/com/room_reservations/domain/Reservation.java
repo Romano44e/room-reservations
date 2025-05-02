@@ -40,13 +40,13 @@ public class Reservation {
     @Column(name = "PAYMENT_STATUS")
     private String paymentStatus;
 
+    @Column(name = "CURRENCY")
+    private String currency;
+
     @Column(name = "AMOUNT")
     private BigDecimal amount;
 
     @Column(name = "CODE")
     private String code;
 
-    public static Snippet builder() {
-        return null;
-    }
 }

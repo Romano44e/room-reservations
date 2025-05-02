@@ -18,22 +18,22 @@ public class RandomwordService {
 
     private final RestTemplate restTemplate;
 
-    public String generateRoomName() {
-
+    public String generateRandomWord() {
         String url = "https://random-word-api.herokuapp.com/word";
 
         try {
             ResponseEntity<String[]> response = restTemplate.getForEntity(url, String[].class);
-            String[] word = response.getBody();
-            String word1 = word.toString();
-            log.info("fetched word {}", word1);
-            if (word1 != null) {
-                return word1 + " Room";
+            String[] words = response.getBody();
+            if (words != null && words.length > 0) {
+                String word = words[0];
+                log.info("Fetched word: {}", word);
+                return word;
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.error("Failed to fetch word: {}", e.getMessage());
         }
-        return "Unnamed Room";
+
+        return "Failed to download random word";
     }
 
 }
