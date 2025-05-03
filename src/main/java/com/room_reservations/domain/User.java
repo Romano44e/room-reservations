@@ -31,7 +31,7 @@ public class User {
     @Column(name = "POINTS")
     private int points;
 
-    @Column(name = "PASSWORD", unique = true, nullable = true)
+    @Column(name = "PASSWORD", unique = true, nullable = false)
     private String password;
 
 }

@@ -13,7 +13,7 @@ public class RoomReservationsApplication {
 
 		RandomwordService randomwordService = new RandomwordService(new RestTemplate());
 
-		String s = randomwordService.generateRoomName();
+		String s = randomwordService.generateRandomWord();
 		System.out.println(s);
 
 	}

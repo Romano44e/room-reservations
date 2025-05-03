@@ -16,7 +16,7 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true)
-    private int id;
+    private Long id;
 
     @Column(name = "NAME")
     private String name;
@@ -30,7 +30,7 @@ public class Room {
     @Column(name = "PRICE")
     private BigDecimal price;
 
-    @Column(name = "KEY")
-    private String key;
+    @Column(name = "CIPHER")
+    private String cipher;
 
 }

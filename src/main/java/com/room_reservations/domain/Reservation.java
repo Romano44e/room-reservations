@@ -23,16 +23,16 @@ public class Reservation {
     private int id;
 
     @Column(name = "USER_ID")
-    private int userId;
+    private Long userId;
 
     @Column(name = "ROOM_ID")
-    private int roomId;
+    private Long roomId;
 
     @Column(name = "START_TIME")
-    private LocalDate startTime;
+    private LocalDateTime startDateTime;
 
     @Column(name = "END_TIME")
-    private LocalDate endTime;
+    private LocalDateTime endDateTime;
 
     @Column(name = "RESERVATION_STATUS")
     private String reservationStatus;

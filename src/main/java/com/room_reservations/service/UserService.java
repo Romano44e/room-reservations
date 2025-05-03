@@ -13,8 +13,11 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RandomwordService randomwordService;
 
     public User save(final User user) {
+//        String password = randomwordService.generateRandomWord();
+//        user.setPassword(password);
         return userRepository.save(user);
     }
 
@@ -65,7 +68,7 @@ public class UserService {
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPoints(userDto.getPoints());
-        user.setPassword(userDto.getPassword());
+//        user.setPassword(userDto.getPassword());
         return userRepository.save(user);
     }
 
