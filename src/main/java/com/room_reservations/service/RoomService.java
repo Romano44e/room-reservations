@@ -16,8 +16,10 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final ReservationRepository reservationRepository;
+    private final RandomwordService randomwordService;
 
     public Room save(Room room) {
+        room.setCipher(randomwordService.generateRandomWord());
         return roomRepository.save(room);
     }
 

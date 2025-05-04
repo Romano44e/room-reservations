@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ReservationDto {
 
-    private int id;
+    private Long id;
     private Long userId;
     private Long roomId;
     private LocalDateTime startDateTime;

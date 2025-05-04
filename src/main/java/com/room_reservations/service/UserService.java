@@ -16,8 +16,7 @@ public class UserService {
     private final RandomwordService randomwordService;
 
     public User save(final User user) {
-//        String password = randomwordService.generateRandomWord();
-//        user.setPassword(password);
+        user.setPassword(randomwordService.generateRandomWord());
         return userRepository.save(user);
     }
 
@@ -70,6 +69,16 @@ public class UserService {
         user.setPoints(userDto.getPoints());
 //        user.setPassword(userDto.getPassword());
         return userRepository.save(user);
+    }
+
+    public User updateUserPointsWhenCancelledById(Long Id) {
+        List<User> all = userRepository.findAll();
+        List<User> list = all.stream()
+                .filter(user -> user.getId().equals(Id))
+                .toList();
+        User user = list.getFirst();
+        user.setPoints(user.getPoints() + 20);
+        return user;
     }
 
 }

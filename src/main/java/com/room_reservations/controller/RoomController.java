@@ -51,7 +51,7 @@ public class RoomController {
         return ResponseEntity.ok(roomDtoList);
     }
 
-    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/availability", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RoomByDateTimeOutputDto> checkRoomAvailibilityByDateTime(@RequestBody RoomByDateTimeInputDto roomByDateTimeInputDto) {
         RoomByDateTimeOutputDto roomByDateTimeOutputDto = roomService.getRoomByDateTime(roomByDateTimeInputDto);
         return ResponseEntity.ok(roomByDateTimeOutputDto);

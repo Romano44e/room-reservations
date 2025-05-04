@@ -4,11 +4,14 @@ import com.room_reservations.domain.*;
 import com.room_reservations.repository.ReservationRepository;
 import com.room_reservations.repository.RoomRepository;
 import com.room_reservations.repository.UserRepository;
+import com.room_reservations.service.exchangerateservice.NbpApiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +22,9 @@ public class ReservationService {
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final RoomService roomService;
+    private final UserService userService;
+    private final RandomwordService randomwordService;
+    private final NbpApiService nbpApiService;
 
     public Reservation save(ReservationPostInputDto reservationPostInputDto) {
         if (reservationPostInputDto.getStartDateTime().isAfter(reservationPostInputDto.getEndDateTime())) {
@@ -58,8 +64,103 @@ public class ReservationService {
         BigDecimal totalReservation = getTotalReservation(reservationPostInputDto);
 
         reservation.setAmount(totalReservation);
-        reservation.setCode(reservationPostInputDto.getCode());
+        reservation.setCode(randomwordService.generateRandomWord());
 
+
+        return reservationRepository.save(reservation);
+    }
+
+    public List<Reservation> getAllReservations() {
+        return reservationRepository.findAll();
+    }
+
+    public List<Reservation> getReservationsByUserId(Long userId) {
+        List<Reservation> all = reservationRepository.findAll();
+        List<Reservation> reservationListByUserId = all.stream()
+                .filter(reservation -> reservation.getUserId().equals(userId))
+                .toList();
+        return reservationListByUserId;
+    }
+
+    public List<Reservation> getReservationsByRoomId(Long roomId) {
+        List<Reservation> all = reservationRepository.findAll();
+        List<Reservation> reservationListByRoomId = all.stream()
+                .filter(reservation -> reservation.getRoomId().equals(roomId))
+                .toList();
+        return reservationListByRoomId;
+    }
+
+
+    public List<Reservation> getReservationsByDateTime(LocalDateTime dateTime) {
+        List<Reservation> all = reservationRepository.findAll();
+        List<Reservation> reservationListByDateTime = all.stream()
+                .filter(reservation -> (reservation.getStartDateTime().isBefore(dateTime) && reservation.getEndDateTime().isAfter(dateTime))
+                || reservation.getStartDateTime().equals(dateTime) || reservation.getEndDateTime().equals(dateTime))
+                .toList();
+        return reservationListByDateTime;
+    }
+
+
+    public List<Reservation> getReservationsByPaymentStatus(String paymentStatus) {
+        List<Reservation> all = reservationRepository.findAll();
+        List<Reservation> reservationListByPaymentStatus = all.stream()
+                .filter(reservation -> reservation.getPaymentStatus().equals(paymentStatus))
+                .toList();
+        return reservationListByPaymentStatus;
+    }
+
+
+    public List<Reservation> getReservationsByReservationStatus(String reservationStatus) {
+        List<Reservation> all = reservationRepository.findAll();
+        List<Reservation> reservationListByReservationStatus = all.stream()
+                .filter(reservation -> reservation.getReservationStatus().equals(reservationStatus))
+                .toList();
+        return reservationListByReservationStatus;
+    }
+
+
+    public List<Reservation> getReservationByAmount(BigDecimal amount) {
+        List<Reservation> all = reservationRepository.findAll();
+        List<Reservation> reservationListByAmount = all.stream()
+                .filter(reservation -> reservation.getAmount().toBigInteger().doubleValue() >= amount.toBigInteger().doubleValue())
+                .toList();
+        return reservationListByAmount;
+    }
+
+    public void deleteReservationByCode(String code) {
+        List<Reservation> all = reservationRepository.findAll();
+        List<Reservation> list = all.stream()
+                .filter(reservation -> reservation.getCode().equals(code))
+                .toList();
+        Long id = list.get(0).getId();
+        Reservation reservation = list.get(0);
+        if (LocalDateTime.now().isBefore(reservation.getStartDateTime().minusDays(1))) {
+            Long userId = reservation.getUserId();
+            userService.updateUserPointsWhenCancelledById(userId);
+        }
+
+        reservationRepository.deleteById(id);
+    }
+
+    public void deleteReservationById(Long Id) {
+        reservationRepository.deleteById(Id);
+    }
+
+    public Reservation updateReservationByCode(final ReservationDto reservationDto) {
+        String code = reservationDto.getCode();
+        List<Reservation> all = reservationRepository.findAll();
+        List<Reservation> list = all.stream()
+                .filter(reservation -> reservation.getCode().equals(code))
+                .toList();
+
+        Reservation reservation = list.getFirst();
+        reservation.setRoomId(reservationDto.getRoomId());
+        reservation.setStartDateTime(reservationDto.getStartDateTime());
+        reservation.setEndDateTime(reservationDto.getEndDateTime());
+        reservation.setPaymentStatus(reservationDto.getPaymentStatus());
+        reservation.setReservationStatus(reservationDto.getReservationStatus());
+        reservation.setAmount(reservationDto.getAmount());
+        reservation.setCurrency(reservationDto.getCurrency());
 
         return reservationRepository.save(reservation);
     }
@@ -80,7 +181,7 @@ public class ReservationService {
         int durationOfReservation = endDateTime.getHour() - startDateTime.getHour();
 
         if (reservationPostInputDto.getCurrency().equals(String.valueOf(ReservationCurrency.EUR))) {
-            return price.multiply(BigDecimal.valueOf(durationOfReservation)).divide(BigDecimal.valueOf(4));
+            return price.multiply(BigDecimal.valueOf(durationOfReservation)).divide(BigDecimal.valueOf(nbpApiService.getEurExchangeRate()), 2, RoundingMode.HALF_UP);
         }
         return price.multiply(BigDecimal.valueOf(durationOfReservation));
     }
