@@ -1,15 +1,13 @@
 package com.room_reservations.controller;
 
-import com.room_reservations.domain.User;
 import com.room_reservations.domain.UserDto;
+import com.room_reservations.facade.RoomReservationFacade;
 import com.room_reservations.mapper.UserMapper;
-import com.room_reservations.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,61 +15,49 @@ import java.util.List;
 @RequestMapping("/roomreservations/users")
 public class UserController {
 
-    private final UserService userService;
+    private final RoomReservationFacade facade;
     private final UserMapper userMapper;
 
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<User> allUsers = userService.getAllUsers();
-        List<UserDto> userDtos = userMapper.mapToUserDtoList(allUsers);
-        return ResponseEntity.ok(userDtos);
+        return ResponseEntity.ok(userMapper.mapToUserDtoList(facade.getAllUsers()));
     }
 
-    @GetMapping(value = "/name/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity<List<UserDto>> getUserByName(@PathVariable String name) {
-        List<User> userByNameList = userService.getUserByName(name);
-        List<UserDto> userDtos = userMapper.mapToUserDtoList(userByNameList);
-        return ResponseEntity.ok(userDtos);
+        return ResponseEntity.ok(userMapper.mapToUserDtoList(facade.getUsersByName(name)));
     }
 
-    @GetMapping(value = "/email/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<List<UserDto>> getUserByEmail(@PathVariable String email) {
-            List<User> userByEmail = userService.getUserByEmail(email);
-            List<UserDto> userDtos = userMapper.mapToUserDtoList(userByEmail);
-            return ResponseEntity.ok(userDtos);
+        return ResponseEntity.ok(userMapper.mapToUserDtoList(facade.getUsersByEmail(email)));
     }
 
-    @GetMapping(value = "/id/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        UserDto userDto = userMapper.mapToUserDto(user);
-        return ResponseEntity.ok(userDto);
+        return ResponseEntity.ok(userMapper.mapToUserDto(facade.getUserById(id)));
     }
 
-    @DeleteMapping(value = "/id/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long id) {
-        userService.deleteUser(id);
+        facade.deleteUserById(id);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/password/{password}")
+    @DeleteMapping("/password/{password}")
     public ResponseEntity<Void> deleteUserByPassword(@PathVariable String password) {
-        userService.deleteUserByPassword(password);
+        facade.deleteUserByPassword(password);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createUser(@RequestBody UserDto userDto) {
-        User user = userMapper.mapToUser(userDto);
-        userService.save(user);
+        facade.saveUser(userMapper.mapToUser(userDto));
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
-        User user = userService.updateUserByPassword(userDto);
-        UserDto userDto1 = userMapper.mapToUserDto(user);
-        return ResponseEntity.ok(userDto1);
+        return ResponseEntity.ok(userMapper.mapToUserDto(facade.updateUser(userDto)));
     }
-
 }

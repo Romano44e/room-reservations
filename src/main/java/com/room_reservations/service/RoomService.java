@@ -3,11 +3,11 @@ package com.room_reservations.service;
 import com.room_reservations.domain.*;
 import com.room_reservations.repository.ReservationRepository;
 import com.room_reservations.repository.RoomRepository;
+import com.room_reservations.service.RoomFilterStrategy.RoomFilterStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,12 +19,24 @@ public class RoomService {
     private final RandomwordService randomwordService;
 
     public Room save(Room room) {
+        String randomWord = randomwordService.generateRandomWord();
+
+        if (randomWord.equals("Failed to download random word")) {
+            String randomWord2 = randomwordService.generateRandomWord2();
+            room.setCipher(randomWord2);
+            return roomRepository.save(room);
+        }
         room.setCipher(randomwordService.generateRandomWord());
         return roomRepository.save(room);
     }
 
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
+    }
+
+    public <T, R> R filterRooms(RoomFilterStrategy<T, R> strategy, T input) {
+        List<Room> allRooms = roomRepository.findAll();
+        return strategy.filter(allRooms, input);
     }
 
     public RoomByDateTimeOutputDto getRoomByDateTime(RoomByDateTimeInputDto roomByDateTimeInputDto) {

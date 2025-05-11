@@ -21,7 +21,7 @@ public class UserRepositoryTestSuite {
     @Test
     void testUserRepositorySave() {
         //Given
-        User user = new User("test user", "test email", 100);
+        User user = new User("test user", "test email", 100, "test password");
 
         //When
         userRepository.save(user);
@@ -52,7 +52,7 @@ public class UserRepositoryTestSuite {
     @Test
     void testUserRepositoryGetUser() {
         //Given
-        User user = new User("test name", "test email", 100);
+        User user = new User("test name", "test email", 100, "test password");
         userRepository.save(user);
 
         //When
@@ -72,7 +72,7 @@ public class UserRepositoryTestSuite {
     @Test
     void testUserRepositoryDeleteUser() {
         //Given
-        User user = new User("test name", "test email", 100);
+        User user = new User("test name", "test email", 100, "test password");
         userRepository.save(user);
 
         //When
@@ -88,7 +88,7 @@ public class UserRepositoryTestSuite {
     @Test
     void testUserRepositoryUpdateUser() {
         //Given
-        long id = userRepository.save(new User("test name", "test email", 100)).getId();
+        long id = userRepository.save(new User("test name", "test email", 100, "test password")).getId();
 
         //When
         Optional<User> byId = userRepository.findById(id);

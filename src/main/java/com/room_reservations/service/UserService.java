@@ -16,7 +16,15 @@ public class UserService {
     private final RandomwordService randomwordService;
 
     public User save(final User user) {
-        user.setPassword(randomwordService.generateRandomWord());
+        String randomWord = randomwordService.generateRandomWord();
+
+
+        if (randomWord.equals("Failed to download random word")) {
+            String randomWord2 = randomwordService.generateRandomWord2();
+            user.setPassword(randomWord2);
+            return userRepository.save(user);
+        }
+        user.setPassword(randomWord);
         return userRepository.save(user);
     }
 

@@ -6,6 +6,7 @@ import jdk.jshell.Snippet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -16,6 +17,18 @@ import java.time.LocalDateTime;
 @Data
 @Entity(name = "RESERVATIONS")
 public class Reservation {
+
+    public Reservation(Long userId, Long roomId, LocalDateTime startDateTime, LocalDateTime endDateTime, String reservationStatus, String paymentStatus, String currency, BigDecimal amount, String code) {
+        this.userId = userId;
+        this.roomId = roomId;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.reservationStatus = reservationStatus;
+        this.paymentStatus = paymentStatus;
+        this.currency = currency;
+        this.amount = amount;
+        this.code = code;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

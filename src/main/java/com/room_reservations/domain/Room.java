@@ -13,6 +13,14 @@ import java.math.BigDecimal;
 @Entity(name = "ROOMS")
 public class Room {
 
+    public Room(String name, int capacity, String location, BigDecimal price, String cipher) {
+        this.name = name;
+        this.capacity = capacity;
+        this.location = location;
+        this.price = price;
+        this.cipher = cipher;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", unique = true)

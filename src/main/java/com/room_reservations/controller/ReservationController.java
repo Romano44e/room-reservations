@@ -1,8 +1,8 @@
 package com.room_reservations.controller;
 
 import com.room_reservations.domain.*;
+import com.room_reservations.facade.RoomReservationFacade;
 import com.room_reservations.mapper.ReservationMapper;
-import com.room_reservations.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,85 +17,65 @@ import java.util.List;
 @RequestMapping("/roomreservations/reservations")
 public class ReservationController {
 
-    private final ReservationService reservationService;
-    private final ReservationMapper reservationMapper;
+    private final RoomReservationFacade facade;
+    private final ReservationMapper mapper;
 
     @GetMapping
     public ResponseEntity<List<ReservationDto>> getAllReservations() {
-        List<Reservation> reservations = reservationService.getAllReservations();
-        List<ReservationDto> reservationDtoList = reservationMapper.mapToReservationDtoList(reservations);
-        return ResponseEntity.ok(reservationDtoList);
+        return ResponseEntity.ok(mapper.mapToReservationDtoList(facade.getAllReservations()));
     }
 
-    @GetMapping(value = "/userId/{userId}")
+    @GetMapping("/userId/{userId}")
     public ResponseEntity<List<ReservationDto>> getReservationByUserId(@PathVariable Long userId) {
-        List<Reservation> reservations = reservationService.getReservationsByUserId(userId);
-        List<ReservationDto> reservationDtoList = reservationMapper.mapToReservationDtoList(reservations);
-        return ResponseEntity.ok(reservationDtoList);
+        return ResponseEntity.ok(mapper.mapToReservationDtoList(facade.getReservationsByUserId(userId)));
     }
 
-    @GetMapping(value = "/roomId/{roomId}")
+    @GetMapping("/roomId/{roomId}")
     public ResponseEntity<List<ReservationDto>> getReservationByRoomId(@PathVariable Long roomId) {
-        List<Reservation> reservations = reservationService.getReservationsByRoomId(roomId);
-        List<ReservationDto> reservationDtoList = reservationMapper.mapToReservationDtoList(reservations);
-        return ResponseEntity.ok(reservationDtoList);
+        return ResponseEntity.ok(mapper.mapToReservationDtoList(facade.getReservationsByRoomId(roomId)));
     }
 
-    @GetMapping(value = "/dateTime/{dateTime}")
+    @GetMapping("/dateTime/{dateTime}")
     public ResponseEntity<List<ReservationDto>> getReservationByDateTime(@PathVariable LocalDateTime dateTime) {
-        List<Reservation> reservations = reservationService.getReservationsByDateTime(dateTime);
-        List<ReservationDto> reservationDtoList = reservationMapper.mapToReservationDtoList(reservations);
-        return ResponseEntity.ok(reservationDtoList);
+        return ResponseEntity.ok(mapper.mapToReservationDtoList(facade.getReservationsByDateTime(dateTime)));
     }
 
-    @GetMapping(value = "/paymentStatus/{paymentStatus}")
+    @GetMapping("/paymentStatus/{paymentStatus}")
     public ResponseEntity<List<ReservationDto>> getReservationByPaymentStatus(@PathVariable String paymentStatus) {
-        List<Reservation> reservations = reservationService.getReservationsByPaymentStatus(paymentStatus);
-        List<ReservationDto> reservationDtoList = reservationMapper.mapToReservationDtoList(reservations);
-        return ResponseEntity.ok(reservationDtoList);
+        return ResponseEntity.ok(mapper.mapToReservationDtoList(facade.getReservationsByPaymentStatus(paymentStatus)));
     }
 
-    @GetMapping(value = "/reservationStatus/{reservationStatus}")
+    @GetMapping("/reservationStatus/{reservationStatus}")
     public ResponseEntity<List<ReservationDto>> getReservationByReservationStatus(@PathVariable String reservationStatus) {
-        List<Reservation> reservations = reservationService.getReservationsByReservationStatus(reservationStatus);
-        List<ReservationDto> reservationDtoList = reservationMapper.mapToReservationDtoList(reservations);
-        return ResponseEntity.ok(reservationDtoList);
+        return ResponseEntity.ok(mapper.mapToReservationDtoList(facade.getReservationsByReservationStatus(reservationStatus)));
     }
 
-    @GetMapping(value = "/amount/{amount}")
+    @GetMapping("/amount/{amount}")
     public ResponseEntity<List<ReservationDto>> getReservationsGreaterOrEqualThanAmount(@PathVariable BigDecimal amount) {
-        List<Reservation> reservations = reservationService.getReservationByAmount(amount);
-        List<ReservationDto> reservationDtoList = reservationMapper.mapToReservationDtoList(reservations);
-        return ResponseEntity.ok(reservationDtoList);
+        return ResponseEntity.ok(mapper.mapToReservationDtoList(facade.getReservationsByAmount(amount)));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createReservation(@RequestBody ReservationPostInputDto reservationPostInputDto) {
-        Reservation reservation = reservationService.save(reservationPostInputDto);
-        if(reservation == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> createReservation(@RequestBody ReservationPostInputDto dto) {
+        Reservation reservation = facade.createReservation(dto);
+        return reservation != null ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
 
-    @DeleteMapping(value = "/code/{code}")
+    @DeleteMapping("/code/{code}")
     public ResponseEntity<Void> deleteReservationByCode(@PathVariable String code) {
-        reservationService.deleteReservationByCode(code);
+        facade.deleteReservationByCode(code);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/id/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<Void> deleteReservationById(@PathVariable Long id) {
-        reservationService.deleteReservationById(id);
+        facade.deleteReservationById(id);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ReservationDto> updateReservation(@RequestBody ReservationDto reservationDto) {
-        Reservation reservation = reservationService.updateReservationByCode(reservationDto);
-        ReservationDto reservationDto1 = reservationMapper.mapToReservationDto(reservation);
-        return ResponseEntity.ok(reservationDto1);
+    public ResponseEntity<ReservationDto> updateReservation(@RequestBody ReservationDto dto) {
+        return ResponseEntity.ok(mapper.mapToReservationDto(facade.updateReservation(dto)));
     }
-
 }
 

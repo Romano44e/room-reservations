@@ -20,6 +20,9 @@ public class RoomReservationsApplication {
 		String s = randomwordService.generateRandomWord();
 		System.out.println(s);
 
+		String s1 = randomwordService.generateRandomWord2();
+		System.out.println(s1);
+
 		Double eurExchangeRate = nbpApiService.getEurExchangeRate();
 		System.out.println(eurExchangeRate);
 

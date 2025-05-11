@@ -16,6 +16,12 @@ public class User {
         this.email = email;
         this.points = points;
     }
+    public User(String name, String email, int points, String password) {
+        this.name = name;
+        this.email = email;
+        this.points = points;
+        this.password = password;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Random;
 
 @Slf4j
 @Service
@@ -35,5 +36,21 @@ public class RandomwordService {
 
         return "Failed to download random word";
     }
+
+
+    public String generateRandomWord2() {
+        String alphabet = "abcdefghijklmnopqrstuvwxyz";
+        Random random = new Random();
+        int length = random.nextInt(3, 10);
+        StringBuilder word = new StringBuilder(length);
+
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(alphabet.length());
+            word.append(alphabet.charAt(index));
+        }
+
+        return word.toString();
+    }
+
 
 }

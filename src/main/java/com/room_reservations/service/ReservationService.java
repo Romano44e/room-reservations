@@ -64,8 +64,15 @@ public class ReservationService {
         BigDecimal totalReservation = getTotalReservation(reservationPostInputDto);
 
         reservation.setAmount(totalReservation);
-        reservation.setCode(randomwordService.generateRandomWord());
 
+        String randomWord = randomwordService.generateRandomWord();
+        if (randomWord.equals("Failed to download random word")) {
+            String randomWord2 = randomwordService.generateRandomWord2();
+            reservation.setCode(randomWord2);
+            return reservationRepository.save(reservation);
+        }
+
+        reservation.setCode(randomWord);
 
         return reservationRepository.save(reservation);
     }
