@@ -18,7 +18,6 @@ public class UserService {
     public User save(final User user) {
         String randomWord = randomwordService.generateRandomWord();
 
-
         if (randomWord.equals("Failed to download random word")) {
             String randomWord2 = randomwordService.generateRandomWord2();
             user.setPassword(randomWord2);
@@ -75,7 +74,6 @@ public class UserService {
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPoints(userDto.getPoints());
-//        user.setPassword(userDto.getPassword());
         return userRepository.save(user);
     }
 

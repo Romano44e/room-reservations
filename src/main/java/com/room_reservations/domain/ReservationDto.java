@@ -22,4 +22,14 @@ public class ReservationDto {
     private BigDecimal amount;
     private String code;
 
+    public ReservationDto(long id, LocalDateTime startDateTime, LocalDateTime endDateTime, String paymentStatus, String reservationStatus, BigDecimal amount, String currency, String code) {
+        this.id = id;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
+        this.paymentStatus = paymentStatus;
+        this.reservationStatus = reservationStatus;
+        this.amount = amount;
+        this.currency = currency;
+        this.code = code;
+    }
 }
