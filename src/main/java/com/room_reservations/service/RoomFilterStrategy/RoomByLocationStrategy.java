@@ -10,7 +10,7 @@ public class RoomByLocationStrategy implements RoomFilterStrategy<String, List<R
     @Override
     public List<Room> filter(List<Room> rooms, String location) {
         return rooms.stream()
-                .filter(r -> r.getLocation().equals(location))
+                .filter(r -> r.getLocation().contains(location))
                 .toList();
     }
 }

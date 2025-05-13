@@ -16,7 +16,7 @@ public class ArchivizationScheduler {
 
     private final ReservationRepository reservationRepository;
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void archivizeOldReservations() {
         List<Reservation> allReservations = reservationRepository.findAll();
         for (Reservation r : allReservations) {

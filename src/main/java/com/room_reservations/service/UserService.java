@@ -38,7 +38,7 @@ public class UserService {
     public List<User> getUserByName(final String name) {
         List<User> all = userRepository.findAll();
         List<User> listByName = all.stream()
-                .filter(u -> u.getName().toLowerCase().contains(name))
+                .filter(u -> u.getName().contains(name))
                 .toList();
         return listByName;
     }

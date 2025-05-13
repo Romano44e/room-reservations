@@ -12,4 +12,8 @@ public class RoomByDateTimeInputDto {
     private String name;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
+
+    public RoomByDateTimeInputDto() {
+
+    }
 }

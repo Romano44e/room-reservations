@@ -11,12 +11,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserMapper {
 
-//    private final UserRepository userRepository;
-
-//    public UserMapper(UserRepository userRepository) {
-//        this.userRepository = userRepository;
-//    }
-
     public User mapToUser(UserDto userDto) {
         return new User(userDto.getId(), userDto.getName(), userDto.getEmail(), userDto.getPoints(), userDto.getPassword());
     }

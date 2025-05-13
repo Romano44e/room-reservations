@@ -11,7 +11,7 @@ public class RoomByPriceStrategy implements RoomFilterStrategy<BigDecimal, List<
     @Override
     public List<Room> filter(List<Room> rooms, BigDecimal price) {
         return rooms.stream()
-                .filter(r -> r.getPrice().equals(price))
+                .filter(r -> r.getPrice().toBigInteger().doubleValue() >= price.doubleValue())
                 .toList();
     }
 }

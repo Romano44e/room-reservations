@@ -63,14 +63,14 @@ public class UserServiceTestSuite  {
     }
 
     @Test
-    void shouldGetUserByNameIgnoringCase() {
+    void shouldGetUserByName() {
         // Given
         User u1 = new User(1L, "Alice", "a@email.com", 0, "pass");
         User u2 = new User(2L, "Bob", "b@email.com", 0, "pass");
         when(userRepository.findAll()).thenReturn(List.of(u1, u2));
 
         // When
-        List<User> result = userService.getUserByName("ali");
+        List<User> result = userService.getUserByName("Ali");
 
         // Then
         assertEquals(1, result.size());
@@ -78,7 +78,7 @@ public class UserServiceTestSuite  {
     }
 
     @Test
-    void shouldGetUserByEmailIgnoringCase() {
+    void shouldGetUserByEmail() {
         // Given
         User u1 = new User(1L, "Alice", "a@email.com", 0, "pass");
         User u2 = new User(2L, "Bob", "bob@gmail.com", 0, "pass");

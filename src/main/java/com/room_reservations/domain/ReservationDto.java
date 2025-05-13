@@ -32,4 +32,8 @@ public class ReservationDto {
         this.currency = currency;
         this.code = code;
     }
+
+    public ReservationDto() {
+
+    }
 }

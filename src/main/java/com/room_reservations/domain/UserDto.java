@@ -13,4 +13,6 @@ public class UserDto {
     private int points;
     private String password;
 
+    public UserDto() {
+    }
 }

@@ -17,23 +17,23 @@ public class ReservationPostInputDto {
     private String currency;
     private String code;
 
-    public ReservationPostInputDto() {
+//    public ReservationPostInputDto() {
+//
+//    }
+//
+//    public ReservationPostInputDto(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+//        this.startDateTime = startDateTime;
+//        this.endDateTime = endDateTime;
+//    }
 
-    }
-
-    public ReservationPostInputDto(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-    }
-
-    public ReservationPostInputDto(long userId, long roomId, LocalDateTime startDateTime, LocalDateTime endDateTime, String currency, String code) {
-        this.userId = userId;
-        this.roomId = roomId;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
-        this.currency = currency;
-        this.code = code;
-    }
+//    public ReservationPostInputDto(long userId, long roomId, LocalDateTime startDateTime, LocalDateTime endDateTime, String currency, String code) {
+//        this.userId = userId;
+//        this.roomId = roomId;
+//        this.startDateTime = startDateTime;
+//        this.endDateTime = endDateTime;
+//        this.currency = currency;
+//        this.code = code;
+//    }
 
     public void setStartDateTime(LocalDateTime localDateTime) {
     }

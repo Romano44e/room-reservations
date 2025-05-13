@@ -16,4 +16,7 @@ public class RoomDto {
     private BigDecimal price;
     private String cipher;
 
+    public RoomDto() {
+
+    }
 }
